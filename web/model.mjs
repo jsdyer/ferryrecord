@@ -1,7 +1,15 @@
-// Keep transformations separate from the DOM so they can be tested directly.
-export function cleanLines(text) {
-  if (typeof text !== 'string') throw new TypeError('Expected text');
-  const lines = text.split(/\r\n|\r|\n/).map(line => line.trim()).filter(Boolean);
-  const unique = [...new Set(lines)];
-  return { text: unique.join('\n'), count: unique.length, removed: lines.length - unique.length };
+export function routeHistory(quarters, route) {
+  return quarters
+    .filter((q) => Object.hasOwn(q.routes, route))
+    .map((q) => ({
+      ...q.routes[route],
+      end: q.end,
+      url: q.url,
+      tripPage: q.tripPage,
+      paxPage: q.paxPage,
+    }));
+}
+export function yearEarlier(rows, day) {
+  const prior = String(Number(day.slice(0, 4)) - 1) + day.slice(4);
+  return rows.find((r) => r.end === prior);
 }

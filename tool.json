@@ -1,16 +1,50 @@
 {
-  "id": "coolcode-tool-template",
-  "title": "CoolCode Tool Starter",
-  "description": "A browser-only example that trims lines and removes exact duplicates.",
-  "category": "security",
-  "tags": ["text", "lines", "duplicates"],
-  "icon": "scan-search",
-  "url": "/coolcode-tool-template/",
-  "source": "https://github.com/jsdyer/coolcode-tool-template",
+  "id": "ferryrecord",
+  "title": "Ferry Record",
+  "description": "Trace service on a BC ferry route, compare quarters and read the original operations reports.",
+  "category": "places",
+  "tags": [
+    "BC Ferries",
+    "Bowen Island",
+    "Snug Cove",
+    "Horseshoe Bay",
+    "ferry",
+    "operations",
+    "transit"
+  ],
+  "icon": "route",
+  "url": "/ferryrecord/",
+  "source": "https://github.com/jsdyer/ferryrecord",
   "hosting": "project",
   "access": "browser",
   "data_info": {
-    "mode": "local",
-    "detail": "The browser reads the text you paste and compares its lines."
+    "mode": "snapshot",
+    "detail": "BC Ferries reports actual round trips and vehicle capacity by route. A 2013 provincial briefing documents passenger-only services to Bowen Island.",
+    "cadence": "Weekly",
+    "probes": [
+      {
+        "label": "Data retrieved",
+        "url": "https://coolcode.ca/ferryrecord/data/edition.json",
+        "path": [
+          "retrieved"
+        ],
+        "count_at": {
+          "path": [
+            "count"
+          ],
+          "unit": "route-quarter records"
+        }
+      },
+      {
+        "label": "Report quarters",
+        "url": "https://coolcode.ca/ferryrecord/data/edition.json",
+        "path": [
+          "start"
+        ],
+        "end_path": [
+          "end"
+        ]
+      }
+    ]
   }
 }
