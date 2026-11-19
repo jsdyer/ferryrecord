@@ -1,21 +1,25 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import { cleanLines } from '../web/model.mjs';
-test('trims, removes blanks and preserves first-seen order', () => {
-  assert.deepEqual(cleanLines('  Halifax\nLangley\nHalifax\n\nVancouver  '), {
-    text: 'Halifax\nLangley\nVancouver', count: 3, removed: 1,
-  });
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const edition = JSON.parse(
+  readFileSync(new URL("../web/data/edition.json", import.meta.url), "utf8"),
+);
+import { routeHistory, yearEarlier } from "../web/model.mjs";
+test("a route uses the same calendar quarter for its year-on-year comparison", () => {
+  const rows = routeHistory(edition.quarters, "08");
+  const june = rows.find((row) => row.end === "2026-06-30");
+  assert.equal(june.trips, 1384);
+  assert.equal(june.passengers, 387857);
+  assert.equal(yearEarlier(rows, june.end).passengers, 374200);
+  assert.equal(yearEarlier(rows, "2024-06-30"), undefined);
+  assert.ok(june.tripPage > 0 && june.paxPage > 0);
 });
-test('supports Windows and old Mac line endings', () => {
-  assert.equal(cleanLines('a\r\nb\ra').text, 'a\nb');
+test("passenger-only zero capacity and unpublished vehicle measures stay distinct", () => {
+  const row = routeHistory(edition.quarters, "13").find(
+    (row) => row.end === "2026-06-30",
+  );
+  assert.equal(row.capacity, 0);
+  assert.equal(row.carried, null);
+  assert.equal(row.utilization, null);
+  assert.deepEqual(routeHistory(edition.quarters, "unknown"), []);
 });
-test('empty text and whitespace produce an empty result', () => {
-  assert.deepEqual(cleanLines(' \n\t'), { text: '', count: 0, removed: 0 });
-});
-test('preserves case and Unicode', () => {
-  assert.equal(cleanLines('Québec\nquébec\n東京\nQuébec').text, 'Québec\nquébec\n東京');
-});
-test('treats markup as ordinary text', () => {
-  assert.equal(cleanLines('<script>alert(1)</script>\n<script>alert(1)</script>').text, '<script>alert(1)</script>');
-});
-test('rejects non-text input', () => { assert.throws(() => cleanLines(null), TypeError); });
