@@ -40,7 +40,8 @@ try {
       .map(([id, name]) => [id, id + " · " + name]),
   );
   const requested = new URLSearchParams(location.search).get("route");
-  byId("route").value = routes.has(requested) ? requested : "08";
+  if (routes.has(requested)) byId("route").value = requested;
+  else if (routes.has("08")) byId("route").value = "08";
   let rows = [],
     csv = [];
   function render() {
@@ -56,18 +57,15 @@ try {
           : number(selected.utilization) + "%",
       ],
     ]);
-    byId("finding").textContent = past
-      ? selected.end +
-        " vs the same quarter a year earlier · " +
-        number(selected.trips) +
-        " round trips compared with " +
-        number(past.trips) +
-        ". Passenger totals were " +
-        number(selected.passengers) +
-        " and " +
-        number(past.passengers) +
-        "."
-      : "This is the earliest included year for this quarter. Earlier and later quarters appear below.";
+    const route = "Route " + byId("route").value + " (" + selected.name + ")";
+    let finding = route + " recorded " + number(selected.passengers) +
+      " passengers in the quarter ending " + selected.end;
+    if (selected.passengers == null) {
+      finding = "Passenger totals were unreported for " + route + " in the quarter ending " + selected.end;
+    } else if (past?.passengers != null) {
+      finding += ", compared with " + number(past.passengers) + " in the same quarter a year earlier";
+    }
+    byId("finding").textContent = finding + ".";
     byId("original").replaceChildren(
       sourceLink(
         "Round trips and vehicle equivalents, PDF p. " + selected.tripPage,
@@ -162,6 +160,8 @@ try {
     downloadCsv("bc-ferry-route-" + byId("route").value + ".csv", csv);
   routeChanged();
   showService();
+  byId("explore").hidden = false;
+  byId("bowen").hidden = false;
 } catch {
   failed();
 }

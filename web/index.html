@@ -15,29 +15,24 @@
       <div class="wrap">
         <nav>
           <a href="https://coolcode.ca/">CoolCode.ca</a
-          ><a href="#sources">Sources &amp; method</a>
+          ><a href="./routes/">Browse ferry routes</a>
         </nav>
         <div class="mast">
-          <h1>{{TITLE}}</h1>
+          <h1>Track a BC Ferries route over time</h1>
           <p>
-            How has service changed on a BC ferry route? Explore actual round
-            trips, passenger totals and vehicle capacity across published
-            quarters.
+            Choose a route and quarter to see how many passengers it carried, how many round trips it made and how passenger counts changed from a year earlier.
           </p>
         </div>
       </div>
     </header>
     <main class="wrap">
-<p><a href="./routes/">Browse quarterly service figures by ferry route</a></p>
-      <p id="edition" role="status">Loading the published records…</p>
-      <section>
-        <h2>Route history</h2>
+      <section id="explore" aria-label="Route history" hidden>
+        <p id="finding" class="feature" role="status"></p>
         <div class="controls">
           <label class="wide">Route<select id="route"></select></label
           ><label>Quarter ending<select id="quarter"></select></label>
         </div>
         <div id="facts" class="facts"></div>
-        <p id="finding" class="feature" role="status"></p>
         <p id="original"></p>
         <div
           class="scroll"
@@ -49,7 +44,8 @@
         </div>
         <button type="button" id="csv">Download this route</button>
       </section>
-      <section id="bowen">
+      <p id="edition" role="status">Loading the published records…</p>
+      <section id="bowen" hidden>
         <h2>Passenger ferries to Bowen in 2013</h2>
         <p>
           A provincial briefing lists these passenger-only connections
@@ -83,7 +79,7 @@
         >
       </p>
       <p>
-        <a href="{{SOURCE_URL}}#readme">Read the full guide and data notes</a>
+        <a href="{{SOURCE_URL}}#readme">Read the {{TITLE}} guide and data notes</a>
       </p>
      <a href="https://coolcode.ca/report/?tool=ferryrecord" referrerpolicy="no-referrer">Report an issue</a></footer>
   </body>

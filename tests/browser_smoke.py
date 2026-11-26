@@ -2,6 +2,7 @@
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlsplit
 import os
 import shutil
 import tempfile
@@ -49,6 +50,15 @@ def main():
                 page.set_viewport_size({"width": 390, "height": 844})
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
                 page.screenshot(path=str(screenshots / "mobile.png"), full_page=True)
+                root = f"http://127.0.0.1:{server.server_port}/ferryrecord/"
+                page.goto(root + "routes/13/")
+                href = page.locator('a[href*="?route="]').get_attribute("href")
+                page.goto(root + "?" + urlsplit(href).query)
+                page.locator("#explore").wait_for()
+                assert page.locator("#route").input_value() == "13"
+                assert "Route 13" in page.locator("#finding").inner_text()
+                assert page.locator("#quarter").input_value() in page.locator("#finding").inner_text()
+                assert page.locator("#finding").bounding_box()["y"] < 844
                 assert not errors, errors
                 browser.close()
             print("Browser checks passed: source records, filters, CSV download and mobile layout")
