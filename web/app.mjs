@@ -39,7 +39,8 @@ try {
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([id, name]) => [id, id + " · " + name]),
   );
-  byId("route").value = "08";
+  const requested = new URLSearchParams(location.search).get("route");
+  byId("route").value = routes.has(requested) ? requested : "08";
   let rows = [],
     csv = [];
   function render() {

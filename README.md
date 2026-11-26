@@ -10,6 +10,8 @@ Choose a BC Ferries route and compare its activity with the same quarter a year 
 On Route 08, compare the quarters ending June 2025 and June 2026. The operator recorded 1,386 and 1,384 round trips respectively, while passenger totals rose from 374,200 to 387,857.
 <!-- /coolcode:guide -->
 
+[Browse quarterly service figures by ferry route](https://coolcode.ca/ferryrecord/routes/). Each data build publishes the observation history, original source links and a project sitemap from the checked-in edition.
+
 ## Sources and interpretation
 
 The operating series starts with the quarter ending June 30, 2024. The first edition includes 25 routes and nine quarters through June 30, 2026. Each row links directly to the round-trip or passenger table in Section 1A. Actual round trips can include a half trip. Automobile equivalents (AEQs) measure vehicle deck space. Route 13 publishes zero vehicle capacity and leaves some vehicle measures empty. The overall utilization figure describes the quarter. It cannot tell a passenger whether an individual sailing was full.
